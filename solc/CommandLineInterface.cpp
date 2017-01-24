@@ -769,7 +769,13 @@ void CommandLineInterface::handleCombinedJSON()
 			output[g_strSources][sourceCode.first]["AST"] = converter.json();
 		}
 	}
-	cout << dev::jsonCompactPrint(output) << endl;
+
+	std::string outputString = dev::jsonCompactPrint(output);
+
+	if (m_args.count(g_argOutputDir))
+		createFile("output.json", outputString);
+	else
+		cout << outputString << endl;
 }
 
 void CommandLineInterface::handleAst(string const& _argStr)
