@@ -716,7 +716,7 @@ void CommandLineInterface::handleCombinedJSON()
 	{
 		Json::Value contractData(Json::objectValue);
 		if (requests.count(g_strAbi))
-			contractData[g_strAbi] = dev::jsonCompactPrint(m_compiler->interface(contractName));
+			contractData[g_strAbi] = m_compiler->interface(contractName);
 		if (requests.count("metadata"))
 			contractData["metadata"] = m_compiler->onChainMetadata(contractName);
 		if (requests.count(g_strBinary))
