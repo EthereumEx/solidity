@@ -522,3 +522,36 @@ IdentifierAnnotation& Identifier::annotation() const
 		m_annotation = new IdentifierAnnotation();
 	return static_cast<IdentifierAnnotation&>(*m_annotation);
 }
+
+bool Literal::looksLikeAddress() const
+{
+	if (subDenomination() != SubDenomination::None)
+		return false;
+
+	string lit = value();
+	return lit.substr(0, 2) == "0x" && abs(int(lit.length()) - 42) <= 1;
+}
+
+bool Literal::passesAddressChecksum() const
+{
+	string lit = value();
+	if (lit.length() != 42)
+		return false;
+
+	h256 hash = keccak256(lit.substr(2));
+	for (size_t i = 0; i < 40; ++i)
+	{
+		char addressCharacter = lit[2 + i];
+		bool lowerCase;
+		if ('a' <= addressCharacter && addressCharacter <= 'f')
+			lowerCase = true;
+		else if ('A' <= addressCharacter && addressCharacter <= 'F')
+			lowerCase = false;
+		else
+			continue;
+		char nibble = (hash[i / 2] >> (8 * (1 - (i % 2)))) & 0xf;
+		if ((nibble < 0x8) != lowerCase)
+			return false;
+	}
+	return true;
+}
