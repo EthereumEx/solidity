@@ -275,7 +275,7 @@ void CommandLineInterface::handleMeta(DocumentationType _type, string const& _co
 	{
 	case DocumentationType::ABIInterface:
 		argName = g_argAbi;
-		suffix = ".abi";
+		suffix = ".json";
 		title = "Contract JSON ABI";
 		break;
 	case DocumentationType::NatspecUser:
