@@ -79,6 +79,11 @@ private:
 	/// @arg _data to be written
 	void createFile(std::string const& _fileName, std::string const& _data);
 
+	/// Create a json file in the given directory
+	/// @arg _fileName the name of the file (the extension will be replaced with .json)
+	/// @arg _json to be written
+	void createJson(std::string const& _fileName, Json::Value const& _json);
+
 	bool m_onlyAssemble = false;
 	bool m_onlyLink = false;
 

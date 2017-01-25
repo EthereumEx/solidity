@@ -444,6 +444,11 @@ bool CommandLineInterface::parseLibraryOption(string const& _input)
 
 	return true;
 }
+void CommandLineInterface::createJson(string const& _fileName, Json::Value const& _json)
+{
+	std::string outpuFileName = boost::filesystem::basename(_fileName) + std::string(".json");
+	createFile(outpuFileName, dev::jsonCompactPrint(_json));
+}
 
 void CommandLineInterface::createFile(string const& _fileName, string const& _data)
 {
@@ -770,12 +775,10 @@ void CommandLineInterface::handleCombinedJSON()
 		}
 	}
 
-	std::string outputString = dev::jsonCompactPrint(output);
-
 	if (m_args.count(g_argOutputDir))
-		createFile("output.json", outputString);
+		createJson(m_args[g_argInputFile].as<vector<string>>().front(), output);
 	else
-		cout << outputString << endl;
+		cout << dev::jsonCompactPrint(output) << endl;
 }
 
 void CommandLineInterface::handleAst(string const& _argStr)
